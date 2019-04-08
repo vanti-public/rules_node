@@ -28,7 +28,10 @@ def npm_install(shrinkwrap_path, output):
 
     # Get the dependency name and version
     encoded_dep_name = shrinkwrap['name']
-    dep_name = encoded_dep_name[len('npm-gen-'):]
+    # Can't reliably decode the encoded_dep_name so use the known first
+    # dependency as the dep_name which we know to be the source module
+    # that was the input for the shrinkwrap process
+    dep_name = next(iter(shrinkwrap['dependencies']))
     dep_version = shrinkwrap['version']
 
     # Write out the package.json file.
